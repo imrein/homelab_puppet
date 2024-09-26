@@ -15,7 +15,7 @@ Status: **WIP**
 My puppetserver is installed using an [ansible role](https://github.com/geerlingguy/ansible-role-puppet) which I tweaked a bit for my personal needs. The setup is created with CI/CD integration in mind and utilizes 2 repositories (this one + hieradata) to keep all the code up-to-date on the puppetserver. These will automatically push changes in config and manifests to the right location on the puppetserver using [Jenkins](https://www.jenkins.io/) pipelines.
 
 > [!NOTE]
-> I created all of the profiles from the ground up to learn more about puppet. These profiles are not perfect and might still have flaws and bad-practises.
+> I created all of the profiles from the ground up to learn more about puppet. These profiles are not perfect and might still have flaws and bad-practices.
 
 ### Profiles
 
