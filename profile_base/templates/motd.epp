@@ -1,0 +1,7 @@
+
+  # Node managed by Puppet.
+
+  FQDN: <%= $facts['networking']['fqdn'] %>
+  OS:   <%= $facts['os']['name'] %> <%= $facts['os']['release']['full'] %>
+  IP:   <%= $facts['networking']['interfaces']['eth0']['ip'] %>
+

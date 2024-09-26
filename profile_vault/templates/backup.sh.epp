@@ -1,0 +1,9 @@
+<% |
+    String $user,
+    String $server,
+| -%>
+#!/bin/bash
+
+vault operator raft snapshot save "/tmp/vault_backup_$(date +%Y-%m-%d).snap"
+rsync -rav -e "ssh -o StrictHostKeyChecking=no -i /home/<%= $user %>/.ssh/id_rsa" "/tmp/vault_backup_$(date +%Y-%m-%d).snap" "<%= $user %>@<%= $server %>:/volume1/NetBackup/vault/"
+rm "/tmp/vault_backup_$(date +%Y-%m-%d).snap"

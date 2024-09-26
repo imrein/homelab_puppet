@@ -1,0 +1,11 @@
+# File managed by puppet.
+
+[Unit]
+Description=Vault backup
+RefuseManualStart=no
+RefuseManualStop=yes
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash -lc 'backup-vault'
+User=root

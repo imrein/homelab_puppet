@@ -1,0 +1,14 @@
+# File managed by puppet.
+
+[Unit]
+Description=Jenkins backup
+RefuseManualStart=no
+RefuseManualStop=no
+
+[Timer]
+Persistent=false
+Unit=backup-jenkins.service
+OnCalendar=*-*-* 03:00:00
+
+[Install]
+WantedBy=default.target

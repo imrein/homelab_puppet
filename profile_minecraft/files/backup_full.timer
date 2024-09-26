@@ -1,0 +1,14 @@
+# File managed by puppet.
+
+[Unit]
+Description=Minecraft full backup
+RefuseManualStart=no
+RefuseManualStop=no
+
+[Timer]
+Persistent=false
+Unit=backup-minecraft-full.service
+OnCalendar=*-*-* 03:00:00
+
+[Install]
+WantedBy=default.target

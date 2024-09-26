@@ -1,0 +1,23 @@
+[Unit]
+Description=Gitea (Git with a cup of tea)
+After=syslog.target
+After=network.target
+
+Wants=mariadb.service
+After=mariadb.service
+
+[Service]
+RestartSec=2s
+Type=notify
+User=git
+Group=git
+WorkingDirectory=/var/lib/gitea/
+ReadWritePaths=-/etc/gitea/app.ini
+
+ExecStart=/usr/local/bin/gitea web --config /etc/gitea/app.ini
+Restart=always
+Environment=USER=git HOME=/home/git GITEA_WORK_DIR=/var/lib/gitea
+WatchdogSec=30s
+
+[Install]
+WantedBy=multi-user.target

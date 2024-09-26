@@ -1,0 +1,9 @@
+<% |
+    String $user,
+    String $server,
+| -%>
+#!/bin/bash
+
+tar czf "/tmp/jenkins_backup_$(date +%Y-%m-%d).tar" "/var/lib/jenkins"
+rsync -rav -e "ssh -o StrictHostKeyChecking=no -i /home/<%= $user %>/.ssh/id_rsa" "/tmp/jenkins_backup_$(date +%Y-%m-%d).tar" "<%= $user %>@<%= $server %>:/volume1/NetBackup/jenkins/"
+rm "/tmp/jenkins_backup_$(date +%Y-%m-%d).tar"

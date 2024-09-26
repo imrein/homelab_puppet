@@ -1,0 +1,9 @@
+<% |
+    String $user,
+    String $server,
+| -%>
+#!/bin/bash
+
+tar czf "/tmp/minecraft_worlds_backup_hour_$(date +%H).gz" "/opt/minecraft_server/world" "/opt/minecraft_server/world_nether" "/opt/minecraft_server/world_the_end"
+rsync -rav -e "ssh -o StrictHostKeyChecking=no -i /home/<%= $user %>/.ssh/id_rsa" "/tmp/minecraft_worlds_backup_hour_$(date +%H).gz" "<%= $user %>@<%= $server %>:/volume1/NetBackup/minecraft/"
+rm -rf "/tmp/minecraft_worlds_backup_hour_$(date +%H).gz"

@@ -1,0 +1,21 @@
+#! /bin/sh
+
+# File managed by Puppet.
+
+key_file=/etc/vault-unseal.key
+test -f $key_file || fail "Unseal key not found!"
+
+counter=0
+
+while read line; do
+  counter=$((counter+1))
+  
+  key=$(echo ${line} | cut -d ' ' -f 4)
+  curl -s -k https://127.0.0.1:8200/v1/sys/seal-status | jq -e '.sealed == false' || \
+    curl -s -k -X POST https://127.0.0.1:8200/v1/sys/unseal -d "{\"key\":\"${key}\"}"
+
+  if [ "$counter" -ge 3 ]; then
+    break
+  fi
+
+done < "$key_file"

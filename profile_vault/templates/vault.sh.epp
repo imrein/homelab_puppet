@@ -1,0 +1,9 @@
+<% |
+  Boolean $skip_verify,
+| -%>
+# File managed by Puppet.
+
+export VAULT_ADDR=https://<%= $facts['networking']['fqdn'] %>:8200
+<% if $skip_verify { %>
+export VAULT_SKIP_VERIFY=true
+<% } %>

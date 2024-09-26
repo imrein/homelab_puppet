@@ -1,0 +1,100 @@
+<% |
+    $stack_name,
+    $containers
+| -%>
+---
+# File managed by puppet.
+<% if $containers.any |$container| { $container['volume_names'] } { -%>
+volumes:
+<% } -%>
+<% $containers.each |$container| { -%>
+<% if $container['volume_names'] { -%>
+<% $container['volume_names'].each |$volume| { -%>
+  <%= $volume %>:
+<% } -%>
+<% } -%>
+<% } -%>
+
+services:
+<% $containers.each |$container| { -%>
+  <%= $container['name'] %>:
+    image: <%= $container['image'] %>
+    container_name: <%= $container['container_name'] %>
+<% if $container['environment'] { -%>
+    environment:
+<% $container['environment'].each |$env| { -%>
+      <%= $env %>
+<% } -%>
+<% } -%>
+<% if $container['ports'] { -%>
+    ports:
+<% $container['ports'].each |$port| { -%>
+      - <%= $port %>
+<% } -%>
+<% } -%>
+<% if $container['dns'] { -%>
+    dns:
+<% $container['dns'].each |$dns_ip| { -%>
+      - <%= $dns_ip %>
+<% } -%>
+<% } -%>
+<% if $container['volumes'] { -%>
+    volumes:
+<% $container['volumes'].each |$volume| { -%>
+      - <%= $volume %>
+<% } -%>
+<% } -%>
+<% if $container['devices'] { -%>
+    devices:
+<% $container['devices'].each |$device| { -%>
+      - <%= $device %>
+<% } -%>
+<% } -%>
+<% if $container['healthcheck'] { -%>
+    healthcheck:
+<% $container['healthcheck'].each |$check| { -%>
+      <%= $check %>
+<% } -%>
+<% } -%>
+<% if $container['command'] { -%>
+    command: <%= $container['command'] %>
+<% } -%>
+<% if $container['hostname'] { -%>
+    hostname: <%= $container['hostname'] %>
+<% } -%>
+<% if $container['stdin_open'] { -%>
+    stdin_open: <%= $container['stdin_open'] %>
+<% } -%>
+<% if $container['tty'] { -%>
+    tty: <%= $container['tty'] %>
+<% } -%>
+<% if $container['env_file'] { -%>
+    env_file:
+<% $container['env_file'].each |$env_file| { -%>
+      - <%= $env_file %>
+<% } -%>
+<% } -%>
+<% if $container['depends_on'] { -%>
+    depends_on:
+<% $container['depends_on'].each |$depends_on| { -%>
+      - <%= $depends_on %>
+<% } -%>
+<% } -%>
+<% if $container['cap_add'] { -%>
+    cap_add:
+<% $container['cap_add'].each |$cap_add| { -%>
+      - <%= $cap_add %>
+<% } -%>
+<% } -%>
+<% if $container['sysctls'] { -%>
+    sysctls:
+<% $container['sysctls'].each |$sysctls| { -%>
+      - <%= $sysctls %>
+<% } -%>
+<% } -%>
+<% if $container['mem_limit'] { -%>
+    mem_limit: <%= $container['mem_limit'] %>
+    mem_reservation: <%= $container['mem_reservation'] %>
+<% } -%>
+    restart: <%= $container['restart'] %>
+<% } -%>

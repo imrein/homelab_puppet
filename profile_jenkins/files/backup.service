@@ -1,0 +1,11 @@
+# File managed by puppet.
+
+[Unit]
+Description=Jenkins backup
+RefuseManualStart=no
+RefuseManualStop=yes
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/backup-jenkins
+User=jenkins

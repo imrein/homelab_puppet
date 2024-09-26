@@ -1,0 +1,15 @@
+<% |
+    String $user,
+    String $server,
+| -%>
+#!/bin/bash
+
+systemctl stop minecraft_server
+sleep 5
+
+tar czf "/tmp/minecraft_server_backup_$(date +%Y-%m-%d).gz" "/opt/minecraft_server"
+rsync -rav -e "ssh -o StrictHostKeyChecking=no -i /home/<%= $user %>/.ssh/id_rsa" "/tmp/minecraft_server_backup_$(date +%Y-%m-%d).gz" "<%= $user %>@<%= $server %>:/volume1/NetBackup/minecraft/"
+rm -rf "/tmp/minecraft_server_backup_$(date +%Y-%m-%d).gz"
+
+sleep 5
+systemctl start minecraft_server

@@ -1,0 +1,7 @@
+<% |
+  String $vault_address,
+| -%>
+
+# File managed by puppet.
+
+VAULT_ADDR=https://<%= $vault_address %>:8200

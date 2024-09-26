@@ -1,0 +1,14 @@
+# File managed by puppet.
+
+[Unit]
+Description=Gitea backup
+RefuseManualStart=no
+RefuseManualStop=no
+
+[Timer]
+Persistent=false
+Unit=backup-gitea.service
+OnCalendar=*-*-* 03:00:00
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,14 @@
+# File managed by puppet.
+
+[Unit]
+Description=Minecraft worlds backup
+RefuseManualStart=no
+RefuseManualStop=no
+
+[Timer]
+Persistent=false
+Unit=backup-minecraft-worlds.service
+OnCalendar=*-*-* *:00/4:00
+
+[Install]
+WantedBy=default.target

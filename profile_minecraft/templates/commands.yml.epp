@@ -1,0 +1,7 @@
+# File managed by Puppet.
+
+command-block-overrides: []
+ignore-vanilla-permissions: false
+aliases:
+  icanhasbukkit:
+  - version $1-

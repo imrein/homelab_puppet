@@ -1,0 +1,25 @@
+<% |
+    String $user,
+    String $server,
+| -%>
+#!/bin/bash
+
+host=$(hostname | cut -d "." -f 1)
+stacks_location="/docker_stacks"
+
+cd ${stacks_location}
+
+for dir in *
+do
+    if [ -d $dir ] && find $dir -mindepth 1 -maxdepth 1 -type d | grep -q .; then
+        cd $dir
+        docker-compose down
+
+        tar cfz "/tmp/${host}_${dir}_$(date +%Y-%m-%d).tar" $(find "${stacks_location}/${dir}" -type d -name "*");
+        find "/tmp/" -name "${host}_${dir}_*" -exec rsync -rav -e "ssh -o StrictHostKeyChecking=no -i /home/<%= $user %>/.ssh/id_rsa" {} "<%= $user %>@<%= $server %>:/volume1/NetBackup/docker/" \;
+        rm "/tmp/${host}_${dir}_$(date +%Y-%m-%d).tar"
+
+        docker-compose up -d
+        cd ..
+    fi
+done

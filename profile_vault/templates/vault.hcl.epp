@@ -1,0 +1,20 @@
+<% |
+  String            $listen_ip,
+  Optional[String]  $raft_id,
+| -%>
+
+storage "raft" {
+  path    = "/var/lib/vault"
+  node_id = "<%= $raft_id %>"
+}
+
+listener "tcp" {
+  address       = "0.0.0.0:8200"
+  tls_disable   = false
+  tls_cert_file = "/etc/puppetlabs/puppet/ssl/certs/<%= $facts['networking']['fqdn'] %>.pem"
+  tls_key_file  = "/etc/puppetlabs/puppet/ssl/private_keys/<%= $facts['networking']['fqdn'] %>.pem"
+}
+
+api_addr = "https://<%= $listen_ip %>:8200"
+cluster_addr = "https://<%= $listen_ip %>:8201"
+ui = true

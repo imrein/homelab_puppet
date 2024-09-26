@@ -1,0 +1,16 @@
+<% | 
+  String  $datasource_prometheus
+| -%>
+---
+# File managed by Puppet.
+
+# config file version
+apiVersion: 1
+
+datasources:
+- name: Prometheus
+  type: prometheus
+  access: proxy
+  orgId: 1
+  url: <%= $datasource_prometheus %>
+  editable: true

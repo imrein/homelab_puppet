@@ -1,0 +1,9 @@
+<% |
+    String $user,
+    String $server,
+| -%>
+#!/bin/bash
+
+"/usr/local/bin/gitea" dump -c "/etc/gitea/app.ini" -f "/tmp/gitea_backup_$(date +%Y-%m-%d).zip"
+rsync -rav -e "ssh -o StrictHostKeyChecking=no -i /home/<%= $user %>/.ssh/id_rsa" "/tmp/gitea_backup_$(date +%Y-%m-%d).zip" "<%= $user %>@<%= $server %>:/volume1/NetBackup/gitea/"
+rm "/tmp/gitea_backup_$(date +%Y-%m-%d).zip"

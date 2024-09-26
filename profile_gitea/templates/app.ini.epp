@@ -1,0 +1,90 @@
+<% | 
+  String        $mysql_ip,
+  String        $db_name,
+  String        $user,
+  Sensitive     $pass,
+  Sensitive     $lfs_jwt_secret,
+  Sensitive     $internal_token,
+  Sensitive     $jwt_secret
+| -%>
+# File managed by puppet.
+APP_NAME = Gitea: Git with a cup of tea
+RUN_USER = git
+WORK_PATH = /var/lib/gitea
+RUN_MODE = prod
+
+[database]
+DB_TYPE = mysql
+HOST = 127.0.0.1:3306
+NAME = <%= $db_name %>
+USER = <%= $user %>
+PASSWD = <%= $pass %>
+SCHEMA = 
+SSL_MODE = disable
+PATH = /var/lib/gitea/data/gitea.db
+LOG_SQL = false
+
+[repository]
+ROOT = /var/lib/gitea/data/gitea-repositories
+
+[server]
+SSH_DOMAIN = <%= $facts['networking']['interfaces']['eth0']['ip'] %>
+DOMAIN = <%= $facts['networking']['interfaces']['eth0']['ip'] %>
+HTTP_PORT = 3000
+ROOT_URL = http://<%= $facts['networking']['interfaces']['eth0']['ip'] %>:3000/
+APP_DATA_PATH = /var/lib/gitea/data
+DISABLE_SSH = false
+SSH_PORT = 22
+LFS_START_SERVER = true
+LFS_JWT_SECRET = <%= $lfs_jwt_secret %>
+OFFLINE_MODE = false
+
+[lfs]
+PATH = /var/lib/gitea/data/lfs
+
+[mailer]
+ENABLED = false
+
+[service]
+REGISTER_EMAIL_CONFIRM = false
+ENABLE_NOTIFY_MAIL = false
+DISABLE_REGISTRATION = true
+ALLOW_ONLY_EXTERNAL_REGISTRATION = false
+ENABLE_CAPTCHA = false
+REQUIRE_SIGNIN_VIEW = false
+DEFAULT_KEEP_EMAIL_PRIVATE = false
+DEFAULT_ALLOW_CREATE_ORGANIZATION = true
+DEFAULT_ENABLE_TIMETRACKING = true
+NO_REPLY_ADDRESS = noreply.localhost
+
+[openid]
+ENABLE_OPENID_SIGNIN = false
+ENABLE_OPENID_SIGNUP = false
+
+[cron.update_checker]
+ENABLED = false
+
+[session]
+PROVIDER = file
+
+[log]
+MODE = console
+LEVEL = info
+ROOT_PATH = /var/lib/gitea/log
+
+[repository.pull-request]
+DEFAULT_MERGE_STYLE = merge
+
+[repository.signing]
+DEFAULT_TRUST_MODEL = committer
+
+[security]
+INSTALL_LOCK = true
+INTERNAL_TOKEN = <%= $internal_token %>
+PASSWORD_HASH_ALGO = pbkdf2
+
+[oauth2]
+JWT_SECRET = <%= $jwt_secret %>
+
+[webhook]
+ALLOWED_HOST_LIST = *
