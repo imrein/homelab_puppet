@@ -1,6 +1,6 @@
 <% | 
-  String      $loki_server,
-  Array[Hash] $jobs
+  String        $loki_server,
+  Array[String] $jobs
 | -%>
 ---
 # File managed by Puppet.
@@ -25,12 +25,12 @@ scrape_configs:
           __path__: /var/log/*.log
 
 <% $jobs.each |$job| { -%>
-  - job_name: <%= $job['job_name'] %>
+  - job_name: '<%= $job %>_job'
     static_configs:
       - targets:
           - localhost
         labels:
-          job: <%= $job['static_configs']['labels']['job'] %>
-          host: <%= $job['static_configs']['labels']['host'] %>
-          __path__: <%= $job['static_configs']['labels']['__path__'] %>
+          job: <%= $job %>
+          host: <%= $facts['networking']['hostname'] %>
+          __path__: '/var/log/<%= $job %>'
 <% } -%>

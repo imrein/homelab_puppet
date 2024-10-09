@@ -14,10 +14,10 @@
 #   Logs that need to be shipped
 #
 class profile_grafana::promtail (
-  String      $version,
-  String      $loki_server,
-  String      $package_type = 'linux-amd64',
-  Array[Hash] $jobs         = [],
+  String        $version,
+  String        $loki_server,
+  String        $package_type = 'linux-amd64',
+  Array[String] $jobs         = [],
 ) {
   # General
   user { 'promtail':
