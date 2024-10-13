@@ -8,7 +8,7 @@ RefuseManualStop=no
 [Timer]
 Persistent=false
 Unit=backup-minecraft-worlds.service
-OnCalendar=*-*-* *:00/4:00
+OnCalendar=*-*-* 0/4:00:00
 
 [Install]
 WantedBy=default.target
