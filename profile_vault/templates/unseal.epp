@@ -3,7 +3,7 @@
 # File managed by Puppet.
 
 key_file=/etc/vault-unseal.key
-test -f $key_file || fail "Unseal key not found!"
+test -f $key_file || echo "Unseal key not found!"; exit 1
 
 counter=0
 
