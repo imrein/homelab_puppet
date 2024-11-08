@@ -31,17 +31,34 @@ class profile_vault::server (
     home   => '/var/lib/vault',
   }
 
+  file { ['/var/lib/vault', '/var/lib/vault/.ssh']:
+    ensure  => directory,
+    owner   => 'vault',
+    group   => 'vault',
+    mode    => '0640',
+    require => User['vault'],
+  }
+
   file { '/var/lib/vault/.ssh/id_rsa':
     ensure  => file,
     content => $ssh_id,
     owner   => 'vault',
     group   => 'vault',
     mode    => '0600',
+    require => File['/var/lib/vault'],
   }
 
-  file { '/var/lib/vault':
+  file { '/etc/puppetlabs/puppet/ssl/private_keys/':
     ensure  => directory,
-    owner   => 'vault',
+    owner   => 'root',
+    group   => 'vault',
+    mode    => '0750',
+    require => User['vault'],
+  }
+
+  file { "/etc/puppetlabs/puppet/ssl/private_keys/${facts['networking']['fqdn']}.pem":
+    ensure  => file,
+    owner   => 'root',
     group   => 'vault',
     mode    => '0640',
     require => User['vault'],
