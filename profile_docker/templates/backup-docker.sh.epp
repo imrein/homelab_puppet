@@ -13,13 +13,15 @@ for dir in *
 do
     if [ -d $dir ] && find $dir -mindepth 1 -maxdepth 1 -type d | grep -q .; then
         cd $dir
-        docker-compose down
+        docker-compose pull && docker-compose down
 
-        tar cfz "/tmp/${host}_${dir}_$(date +%Y-%m-%d).tar" $(find "${stacks_location}/${dir}" -type d -name "*");
-        find "/tmp/" -name "${host}_${dir}_*" -exec rsync -rav -e "ssh -o StrictHostKeyChecking=no -i /home/<%= $user %>/.ssh/id_rsa" {} "<%= $user %>@<%= $server %>:/volume1/NetBackup/docker/" \;
+        tar cfz "/tmp/${host}_${dir}_$(date +%Y-%m-%d).tar" -C "${stacks_location}" $(find "./${dir}" -type d -name "*");
+        find "/tmp/" -name "${host}_${dir}_*" -exec rsync -rav -e "ssh -o StrictHostKeyChecking=no -i /home/<%= $user %>/.ssh/id_rsa" {} "<%= $user %>@<%= $server %>:/volume2/NetBackup/docker/" \;
         rm "/tmp/${host}_${dir}_$(date +%Y-%m-%d).tar"
 
         docker-compose up -d
         cd ..
+    else
+        echo "Skipping ${dir} as it has no subdirectories."
     fi
 done
