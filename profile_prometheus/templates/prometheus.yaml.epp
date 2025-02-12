@@ -8,15 +8,14 @@
 ---
 # File managed by puppet.
 global:
-  scrape_interval: 10s
+  scrape_interval: 1m
 
 scrape_configs:
   - job_name: 'prometheus_master'
-    scrape_interval: 5s
     static_configs:
       - targets: ['localhost:9090']
 
-  - job_name: 'node'
+  - job_name: 'node-exporter'
     static_configs:
     <%- $node_targets.each |String $target| { -%>
       - targets: ['<%= $target %>:9100']
@@ -45,10 +44,21 @@ scrape_configs:
       target_label: __address__
 
   - job_name: 'watchtower'
-    scrape_interval: 5s
     metrics_path: /v1/metrics
     bearer_token: <%= $watchtower_bearer %>
     static_configs:
     <%- $watchtower_targets.each |String $target| { -%>
       - targets: ['<%= $target %>']
     <%- } -%>
+
+  - job_name: 'federate'
+    honor_labels: true
+    metrics_path: '/federate'
+    params:
+      'match[]':
+        - '{job="kubernetes-service-endpoints"}'
+        - '{job="kubernetes-nodes-cadvisor"}'
+        - '{app_kubernetes_io_name="kube-state-metrics"}'
+        - '{__name__=~"kube.*"}'
+    static_configs:
+      - targets: ['192.168.129.212']
