@@ -1,7 +1,7 @@
 # Homelab puppet repo
 
 <p align="center">
-<img src="https://www.puppet.com/sites/default/themes/custom/puppet/logo.svg" width=250>
+<img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Puppet_transparent_logo.svg" width=250>
 </p>
 
 <div align="center">
